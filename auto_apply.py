@@ -2,6 +2,10 @@ import os
 import json
 from typing import List
 import openai
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file if present
+load_dotenv()
 
 # Ensure the OpenAI API key is set in environment variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -54,12 +58,17 @@ def message_recruiter(recruiter_name: str, profile: dict) -> str:
     return response.choices[0].message.content.strip()
 
 
-def apply_to_jobs(job_descriptions: List[str], profile: dict) -> None:
-    """Pretend to apply to jobs by generating cover letters."""
-    for jd in job_descriptions:
+def apply_to_jobs(job_descriptions: List[str], profile: dict, output_dir: str | None = None) -> None:
+    """Generate cover letters and optionally save them to files."""
+    for idx, jd in enumerate(job_descriptions, 1):
         letter = generate_cover_letter(jd, profile)
         print("\n=== Generated Cover Letter ===")
         print(letter)
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
+            path = os.path.join(output_dir, f"cover_letter_{idx}.txt")
+            with open(path, "w") as f:
+                f.write(letter)
         # Placeholder for actual API call to submit application
         print("[Simulated] Application submitted for job\n")
 
@@ -83,7 +92,7 @@ def main() -> None:
         "ML Engineer position working with deep learning models and production pipelines.",
     ]
 
-    apply_to_jobs(job_descriptions, sample_profile)
+    apply_to_jobs(job_descriptions, sample_profile, output_dir="letters")
 
     recruiter_message = message_recruiter("Alex", sample_profile)
     print("Recruiter Message:\n", recruiter_message)
