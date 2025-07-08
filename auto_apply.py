@@ -3,15 +3,17 @@ import json
 from typing import List
 import openai
 from dotenv import load_dotenv
+from config import load_config
+from error_handler import handle_error
 
 # Load environment variables from a .env file if present
 load_dotenv()
 
-# Ensure the OpenAI API key is set in environment variables
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise RuntimeError("OPENAI_API_KEY environment variable not set")
-openai.api_key = OPENAI_API_KEY
+# Ensure the OpenAI API key is loaded from configuration
+CONFIG = load_config()
+if not CONFIG.get("api_key"):
+    raise RuntimeError("OPENAI_API_KEY not configured")
+openai.api_key = CONFIG["api_key"]
 
 SYSTEM_PROMPT = "You are a helpful assistant that creates resumes and cover letters for job applicants." 
 
@@ -99,4 +101,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        handle_error(e)

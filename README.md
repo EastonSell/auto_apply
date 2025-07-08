@@ -34,3 +34,15 @@ The script demonstrates how to:
 - Compose a short recruiter outreach message.
 
 The `apply_to_jobs` function is a placeholder where integrations with specific job site APIs would go. Currently it only prints the generated cover letter and simulates a submission.
+
+## Command Line Interface
+
+A simple CLI is available via `cli.py`:
+
+```bash
+python cli.py profile.json
+```
+
+It will prompt you to create or load a profile and then offer options to
+generate resumes or cover letters, scrape job descriptions and track
+applications.
