@@ -9,10 +9,12 @@ This repository contains a simple prototype for automatically generating a resum
    pip install -r requirements.txt
    ```
 
-2. Set your OpenAI API key:
+2. Copy `.env.example` to `.env` and add your OpenAI API key:
    ```bash
-   export OPENAI_API_KEY=your-key-here
+   cp .env.example .env
+   # Edit .env and set OPENAI_API_KEY
    ```
+   The application will automatically load variables from `.env` when run.
 
 ## Usage
 
@@ -21,6 +23,9 @@ Run the main script to see sample output:
 ```bash
 python auto_apply.py
 ```
+
+Cover letters will be written to the `letters` directory when running the
+script.
 
 The script demonstrates how to:
 
